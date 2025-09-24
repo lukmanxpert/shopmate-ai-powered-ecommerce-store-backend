@@ -58,4 +58,15 @@ export const getUser = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-export const logOut = catchAsyncErrors(async (req, res, next) => {});
+export const logOut = catchAsyncErrors(async (req, res, next) => {
+  res
+    .status(200)
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .json({
+      success: true,
+      message: "Logged out successfully.",
+    });
+});
