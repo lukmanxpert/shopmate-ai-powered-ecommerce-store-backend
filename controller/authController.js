@@ -50,6 +50,12 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-export const getUser = catchAsyncErrors(async (req, res, next) => {});
+export const getUser = catchAsyncErrors(async (req, res, next) => {
+  const { user } = req;
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
 
 export const logOut = catchAsyncErrors(async (req, res, next) => {});
