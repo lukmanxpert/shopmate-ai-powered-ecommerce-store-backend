@@ -3,7 +3,7 @@ import {
   authorizedRoles,
   isAuthenticated,
 } from "../middlewares/authMiddleware.js";
-import { createProduct } from "../controller/productController.js";
+import { createProduct, fetchAllProducts } from "../controller/productController.js";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post(
   authorizedRoles("Admin"),
   createProduct
 );
-// router.get("/", fetchAllProducts);
+router.get("/", fetchAllProducts);
 // router.get("/singleProduct/:productId", fetchSingleProduct);
 // router.put("/post-new/review/:productId", isAuthenticated, postProductReview);
 // router.delete("/delete/review/:productId", isAuthenticated, deleteReview);
