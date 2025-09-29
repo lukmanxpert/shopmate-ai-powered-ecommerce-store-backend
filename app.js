@@ -6,7 +6,7 @@ import fileUpload from "express-fileupload";
 import { createTables } from "./utils/createTables.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import authRouter from "./router/authRoutes.js";
-import productRouter from "./router/productRoutes.js"
+import productRouter from "./router/productRoutes.js";
 
 const app = express();
 config({ path: "./config/config.env" });
@@ -26,6 +26,12 @@ app.use(
     useTempFiles: true,
   })
 );
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "App is running successfully",
+  });
+});
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/product", productRouter);
