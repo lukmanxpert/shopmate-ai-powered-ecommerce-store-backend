@@ -5,6 +5,7 @@ import {
 } from "../middlewares/authMiddleware.js";
 import {
   createProduct,
+  deleteProduct,
   fetchAllProducts,
   updateProduct,
 } from "../controller/productController.js";
@@ -23,6 +24,12 @@ router.put(
   isAuthenticated,
   authorizedRoles("Admin"),
   updateProduct
+);
+router.delete(
+  "/admin/delete/:productId",
+  isAuthenticated,
+  authorizedRoles("Admin"),
+  deleteProduct
 );
 
 export default router;
