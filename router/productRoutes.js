@@ -6,6 +6,7 @@ import {
 import {
   createProduct,
   deleteProduct,
+  deleteReview,
   fetchAllProducts,
   fetchSingleProduct,
   postProductReview,
@@ -35,5 +36,6 @@ router.delete(
 );
 router.get("/singleProduct/:productId", fetchSingleProduct);
 router.put("/post-new/review/:productId", isAuthenticated, postProductReview);
+router.delete("/delete/review/:productId", isAuthenticated, deleteReview);
 
 export default router;
