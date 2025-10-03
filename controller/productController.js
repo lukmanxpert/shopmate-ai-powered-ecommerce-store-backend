@@ -381,3 +381,12 @@ export const deleteReview = catchAsyncErrors(async (req, res, next) => {
     product: updatedProduct.rows[0],
   });
 });
+
+export const fetchAIFilteredProducts = catchAsyncErrors(
+  async (req, res, next) => {
+    const { userPrompt } = req.body;
+    if (!userPrompt) {
+      return next(new ErrorHandler("Provide a valid prompt.", 400));
+    }
+  }
+);
