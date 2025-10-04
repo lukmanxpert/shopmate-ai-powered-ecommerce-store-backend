@@ -3,7 +3,7 @@ import {
   authorizedRoles,
   isAuthenticated,
 } from "../middlewares/authMiddleware.js";
-import { deleteUser, getAllUsers } from "../controller/adminController.js";
+import { dashboardStats, deleteUser, getAllUsers } from "../controller/adminController.js";
 
 const router = express.Router();
 router.get(
@@ -17,6 +17,12 @@ router.delete(
   isAuthenticated,
   authorizedRoles("Admin"),
   deleteUser
+);
+router.get(
+  "/fetch/dashboard-stats",
+  isAuthenticated,
+  authorizedRoles("Admin"),
+  dashboardStats
 );
 
 export default router;
