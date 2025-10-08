@@ -5,6 +5,7 @@ import {
   fetchMyOrders,
   fetchAllOrders,
   updateOrderStatus,
+  deleteOrder,
 } from "../controller/orderController.js";
 import {
   isAuthenticated,
@@ -26,6 +27,12 @@ router.put(
   isAuthenticated,
   authorizedRoles("Admin"),
   updateOrderStatus
+);
+router.delete(
+  "/admin/delete/:orderId",
+  isAuthenticated,
+  authorizedRoles("Admin"),
+  deleteOrder
 );
 
 export default router;
