@@ -249,3 +249,34 @@ GROUP BY o.id, s.id
     orders: result.rows,
   });
 });
+
+export const updateOrderStatus = catchAsyncErrors(async (req, res, next) => {
+  const { status } = req.body;
+  if (!status) {
+    return next(new ErrorHandler("Provide a valid status for order.", 400));
+  }
+  const { orderId } = req.params;
+  const results = await database.query(
+    `
+    SELECT * FROM orders WHERE id = $1
+    `,
+    [orderId]
+  );
+
+  if (results.rows.length === 0) {
+    return next(new ErrorHandler("Invalid order ID.", 404));
+  }
+
+  const updatedOrder = await database.query(
+    `
+    UPDATE orders SET order_status = $1 WHERE id = $2 RETURNING *
+    `,
+    [status, orderId]
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Order status updated.",
+    updatedOrder: updatedOrder.rows[0],
+  });
+});

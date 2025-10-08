@@ -4,6 +4,7 @@ import {
   placeNewOrder,
   fetchMyOrders,
   fetchAllOrders,
+  updateOrderStatus,
 } from "../controller/orderController.js";
 import {
   isAuthenticated,
@@ -19,6 +20,12 @@ router.get(
   isAuthenticated,
   authorizedRoles("Admin"),
   fetchAllOrders
+);
+router.put(
+  "/admin/update/:orderId",
+  isAuthenticated,
+  authorizedRoles("Admin"),
+  updateOrderStatus
 );
 
 export default router;
