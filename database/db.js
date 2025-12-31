@@ -1,12 +1,18 @@
+import { config } from "dotenv";
 import pkg from "pg";
 const { Client } = pkg;
 
+config();
+
 const database = new Client({
-  user: "postgres",
-  host: "localhost",
-  database: "shopmate",
-  password: "201500",
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  ssl: {
+    required: true,
+  },
 });
 
 try {

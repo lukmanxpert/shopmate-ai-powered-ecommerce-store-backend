@@ -13,7 +13,7 @@ import Stripe from "stripe";
 import database from "./database/db.js";
 
 const app = express();
-config({ path: "./config/config.env" });
+config();
 app.use(
   cors({
     origin: [process.env.FRONTEND_URL, process.env.DASHBOARD_URL],
