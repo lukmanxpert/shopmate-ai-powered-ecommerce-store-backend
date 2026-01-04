@@ -1,132 +1,145 @@
-# 🛍️ ShopMate — AI‑Powered E‑commerce Store Backend
+# ShopMate AI-Powered E-commerce Store Backend
 
-[![Deployed](https://img.shields.io/badge/Deployed‑Live‑green)](https://shopmate-server.onrender.com/)  
-🔗 **Live Backend API:** https://shopmate-server.onrender.com/
+**Live Server:** [https://shopmate-server.onrender.com/](https://shopmate-server.onrender.com/)
 
-ShopMate is a robust **AI‑powered e‑commerce backend server** built with Node.js, Express, and MongoDB. It provides secure REST APIs to power online shopping functionalities like user authentication, product & order management, cart, and more — ready to be consumed by any frontend (web, mobile, PWA).
+## Overview
 
----
-
-## 🚀 Features
-
-- RESTful API endpoints for core e‑commerce operations  
-- User authentication (signup & login)  
-- Product CRUD (Create, Read, Update, Delete)  
-- Category & Brand management  
-- Shopping cart handling  
-- Order creation & management  
-- Wishlist support  
-- Secured with JWT authentication  
-- Scalable backend architecture
+ShopMate is an AI-powered e-commerce store backend built with Node.js, Express, and PostgreSQL. It provides robust API endpoints to manage users, products, orders, payments, and authentication. This backend is designed to support scalable and secure e-commerce platforms with modern features.
 
 ---
 
-## 🧠 Tech Stack
+## Features
 
-| Layer | Technology |
-|------|------------|
-| Backend | Node.js, Express.js |
-| Database | MongoDB |
-| Authentication | JSON Web Token (JWT) |
-| Hosting | Render |
-| Environment | dotenv |
+- **User Authentication & Authorization**
+  - Sign up, login, JWT-based authentication
+  - Role-based access (admin, user)
+- **Product Management**
+  - CRUD operations for products
+  - Image uploads via Cloudinary
+- **Order & Booking Management**
+  - Place orders, view orders
+  - Stripe payment integration
+- **Secure Data Handling**
+  - Password hashing using Bcrypt
+  - Cookie-based authentication
+- **Email Notifications**
+  - Nodemailer integration for notifications
+- **File Uploads**
+  - Handle product images and user uploads
 
 ---
 
-## 📦 Installation
+## Technology Stack
 
-### 1️⃣ Clone the repository
+- **Backend:** Node.js, Express.js  
+- **Database:** PostgreSQL (`pg` package)  
+- **Authentication:** JWT, Cookie-parser  
+- **File Uploads:** express-fileupload, Cloudinary  
+- **Payments:** Stripe  
+- **Email Service:** Nodemailer  
+- **Other Utilities:** dotenv, bcrypt, cors  
+
+---
+
+## Installation
+
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/lukmanxpert/shopmate-ai-powered-ecommerce-store-backend.git
 cd shopmate-ai-powered-ecommerce-store-backend
 ```
 
-### 2️⃣ Install dependencies
+2. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Environment Variables
+3. **Create a `.env` file** in the root directory with your environment variables:
 
-Create a `.env` file in the root directory:
-
-```
+```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
+DATABASE_URL=your_postgresql_connection_string
 JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
+EMAIL_USER=your_email
+EMAIL_PASS=your_email_password
 ```
 
-### 4️⃣ Run the server
+4. **Start the server**
 
 ```bash
 npm start
 ```
 
-Server will run at:
-
-```
-http://localhost:5000
-```
+The server will run at [http://localhost:5000](http://localhost:5000) or the port specified in your `.env`.
 
 ---
 
-## 📑 API Endpoints (Overview)
+## API Endpoints
 
-### 🔐 Authentication
-- POST `/auth/register`
-- POST `/auth/login`
+> This is a brief overview. For full documentation, you can explore the `/routes` folder in the repo.
 
-### 🛍️ Products
-- GET `/products`
-- POST `/products`
-- GET `/products/:id`
-- PUT `/products/:id`
-- DELETE `/products/:id`
+- **Users**
+  - `POST /api/users/register` – Register a new user
+  - `POST /api/users/login` – User login
+  - `GET /api/users/me` – Get current user profile
 
-### 🛒 Cart
-- GET `/cart`
-- POST `/cart`
-- DELETE `/cart/:id`
+- **Products**
+  - `GET /api/products` – List all products
+  - `POST /api/products` – Add a new product (admin)
+  - `PUT /api/products/:id` – Update product (admin)
+  - `DELETE /api/products/:id` – Delete product (admin)
 
-### 📦 Orders
-- POST `/orders`
-- GET `/orders`
+- **Orders**
+  - `POST /api/orders` – Place a new order
+  - `GET /api/orders/:id` – Get order details
+  - `GET /api/orders/user/:id` – Get orders of a specific user
 
-*(Endpoints may vary slightly based on implementation)*
+- **Payments**
+  - `POST /api/payments` – Stripe payment endpoint
 
 ---
 
-## 📁 Project Structure
+## Folder Structure
 
 ```
-├── config/
-├── controllers/
-├── middlewares/
-├── models/
-├── routes/
-├── utils/
-├── server.js
-├── app.js
+backend/
+│
+├── config/          # DB and Cloudinary configuration
+├── controllers/     # Request handlers for API endpoints
+├── middleware/      # Authentication & error handling
+├── routes/          # API route definitions
+├── utils/           # Helper functions (email, cloudinary, etc.)
+├── server.js        # Entry point of the backend
 ├── package.json
+└── .env             # Environment variables
 ```
 
 ---
 
-## 🧪 Testing
+## Contribution
 
-Use **Postman**, **Insomnia**, or connect with a frontend client to test APIs.
-
----
-
-## 👨‍💻 Author
-
-**Lukman Hossain**  
-GitHub: https://github.com/lukmanxpert
+1. Fork the repository  
+2. Create a new branch (`git checkout -b feature/your-feature`)  
+3. Make your changes and commit (`git commit -m 'Add new feature'`)  
+4. Push to the branch (`git push origin feature/your-feature`)  
+5. Create a Pull Request
 
 ---
 
-## 📜 License
+## License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **ISC License**.
+
+---
+
+## Contact
+
+**Author:** Sheikh Lukman  
+**GitHub:** [https://github.com/lukmanxpert](https://github.com/lukmanxpert)
+
