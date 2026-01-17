@@ -1,6 +1,6 @@
 # ShopMate AI-Powered E-commerce Store Backend
 
-**Live Server:** [https://shopmate-server.onrender.com/](https://shopmate-server.onrender.com/)
+**Live Server:** [https://shopmate-five.vercel.app/](https://shopmate-five.vercel.app/)
 
 ## Overview
 
