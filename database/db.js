@@ -1,10 +1,10 @@
 import { config } from "dotenv";
 import pkg from "pg";
-const { Client } = pkg;
+const { Pool } = pkg;
 
 config();
 
-const database = new Client({
+const database = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
@@ -14,13 +14,5 @@ const database = new Client({
     required: true,
   },
 });
-
-try {
-  await database.connect();
-  console.log("Connected to the database successfully");
-} catch (error) {
-  console.log("error :>> ", error);
-  process.exit(1);
-}
 
 export default database;

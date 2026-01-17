@@ -1,6 +1,6 @@
 export async function getAIRecommendation(req, res, userPrompt, products) {
   const API_KEY = process.env.GEMINI_API_KEY;
-  const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+  const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
   try {
     const geminiPrompt = `
@@ -10,7 +10,7 @@ export async function getAIRecommendation(req, res, userPrompt, products) {
         Based on the following user request, filter and suggest the best matching products:
         "${userPrompt}"
 
-        Only return the matching products in JSON format.
+        Return only a valid JSON array of the matching products. Do not include any other text or formatting.
     `;
 
     const response = await fetch(URL, {
@@ -21,10 +21,16 @@ export async function getAIRecommendation(req, res, userPrompt, products) {
       }),
     });
 
+    if (!response.ok) {
+      return res
+        .status(500)
+        .json({ success: false, message: `AI API error: ${response.status} ${response.statusText}` });
+    }
+
     const data = await response.json();
     const aiResponseText =
       data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
-    const cleanedText = aiResponseText.replace(/```json|```/g, ``).trim();
+    const cleanedText = aiResponseText.trim();
 
     if (!cleanedText) {
       return res
