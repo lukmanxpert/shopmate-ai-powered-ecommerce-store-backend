@@ -1,8 +1,17 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 export async function getAIRecommendation(req, res, userPrompt, products) {
   const API_KEY = process.env.GEMINI_API_KEY;
-  const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
   try {
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    
+    // Optional: List available models (uncomment to debug)
+    // const models = await genAI.listModels();
+    // console.log("Available models:", models.data.map(m => m.name));
+
+    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+
     const geminiPrompt = `
         Here is a list of available products:
         ${JSON.stringify(products, null, 2)}
@@ -13,41 +22,34 @@ export async function getAIRecommendation(req, res, userPrompt, products) {
         Return only a valid JSON array of the matching products. Do not include any other text or formatting.
     `;
 
-    const response = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: geminiPrompt }] }],
-      }),
-    });
+    const result = await model.generateContent(geminiPrompt);
+    const response = await result.response;
+    const aiResponseText = response.text().trim();
 
-    if (!response.ok) {
-      return res
-        .status(500)
-        .json({ success: false, message: `AI API error: ${response.status} ${response.statusText}` });
+    let cleanedText = aiResponseText;
+
+    // Remove markdown code blocks if present
+    if (cleanedText.startsWith('```json')) {
+      cleanedText = cleanedText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanedText.startsWith('```')) {
+      cleanedText = cleanedText.replace(/^```\s*/, '').replace(/\s*```$/, '');
     }
 
-    const data = await response.json();
-    const aiResponseText =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
-    const cleanedText = aiResponseText.trim();
-
     if (!cleanedText) {
-      return res
-        .status(500)
-        .json({ success: false, message: "AI response is empty or invalid." });
+      return { success: false, message: "AI response is empty or invalid." };
     }
 
     let parsedProducts;
     try {
       parsedProducts = JSON.parse(cleanedText);
+      if (!Array.isArray(parsedProducts)) {
+        throw new Error("Response is not an array");
+      }
     } catch (error) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Failed to parse AI response" });
+      return { success: false, message: "Failed to parse AI response as JSON array" };
     }
     return { success: true, products: parsedProducts };
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error." });
+    return { success: false, message: `AI API error: ${error.message}` };
   }
 }

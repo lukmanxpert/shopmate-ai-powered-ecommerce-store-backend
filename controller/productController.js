@@ -80,7 +80,7 @@ export const fetchAllProducts = catchAsyncErrors(async (req, res, next) => {
     const [minPrice, maxPrice] = price.split("-");
     if (minPrice && maxPrice) {
       conditions.push(`price BETWEEN $${index} AND $${index + 1}`);
-      values.push(minPrice, maxPrice);
+      values.push(parseFloat(minPrice) / 125, parseFloat(maxPrice) / 125);
       index += 2;
     }
   }
@@ -502,15 +502,23 @@ export const fetchAIFilteredProducts = catchAsyncErrors(
     }
 
     // STEP 2: AI FILTERING
-    const { success, products } = await getAIRecommendation(
+    const { success, products, message } = await getAIRecommendation(
       req,
       res,
       userPrompt,
       filteredProducts
     );
 
+    if (!success) {
+      return res.status(500).json({
+        success: false,
+        message: message || "AI filtering failed.",
+        products: [],
+      });
+    }
+
     res.status(200).json({
-      success: success,
+      success: true,
       message: "AI filtered products.",
       products,
     });
